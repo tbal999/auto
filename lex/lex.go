@@ -65,7 +65,21 @@ func Command(item []string, lout *os.File) {
 		}
 	case "clearfolder":
 		log.Printf("Clearing Folder: %s\n", item[1])
-		os.RemoveAll(item[1])
+		inputfiles, err := ioutil.ReadDir(item[1])
+		if err != nil {
+			fmt.Println(err)
+		}
+		for _, inputfile := range inputfiles {
+			switch mode := inputfile.Mode(); {
+			case mode.IsDir():
+				log.Printf("Skipping directory %s\n", item[1]+`\`+inputfile.Name())
+			case mode.IsRegular():
+				e := os.Remove(inputfile.Name())
+				if e != nil {
+					log.Println(e.Error())
+				}
+			}
+		}
 	case "copyfolder":
 		log.Printf("Copying all Files: %s -> %s\n", item[1], item[2])
 		inputfiles, err := ioutil.ReadDir(item[1])
