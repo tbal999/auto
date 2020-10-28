@@ -84,18 +84,24 @@ func Command(item []string, lout *os.File) {
 			fmt.Println(err)
 		}
 		for _, inputfile := range inputfiles {
-			from := item[1] + "/" + inputfile.Name()
-			to := item[2] + "/" + inputfile.Name()
-			input, err := ioutil.ReadFile(from)
-			if err != nil {
-				fmt.Println(err)
-				log.Println(err)
-			} else {
-				err = ioutil.WriteFile(to, input, 0644)
+			switch mode := inputfile.Mode(); {
+			case mode.IsDir():
+				fmt.Printf("Skipping directory %s\n", item[1]+`\`+inputfile.Name())
+				log.Printf("Skipping directory %s\n", item[1]+`\`+inputfile.Name())
+			case mode.IsRegular():
+				from := item[1] + "/" + inputfile.Name()
+				to := item[2] + "/" + inputfile.Name()
+				input, err := ioutil.ReadFile(from)
 				if err != nil {
-					fmt.Println("Error creating", to)
 					fmt.Println(err)
 					log.Println(err)
+				} else {
+					err = ioutil.WriteFile(to, input, 0644)
+					if err != nil {
+						fmt.Println("Error creating", to)
+						fmt.Println(err)
+						log.Println(err)
+					}
 				}
 			}
 		}
