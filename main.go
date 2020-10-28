@@ -1,35 +1,14 @@
 package main
 
 import (
-	"auto/lex"
+	"auto/pre"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
-	"strconv"
 	"strings"
 	"time"
 )
-
-var (
-	stop        = false
-	loop        []string
-	returnindex []int
-	loopcount   int
-)
-
-func findloopindex(item string) int {
-	for index := range loop {
-		if strings.Contains(loop[index], item) == true {
-			return returnindex[index]
-		}
-	}
-	return 0
-}
-
-func clean(s string) string {
-	return strings.TrimSuffix(s, "\r")
-}
 
 func importfile(lout *os.File) {
 	filename := "instructions.txt"
@@ -43,43 +22,7 @@ func importfile(lout *os.File) {
 	index := 0
 	for index < len(instructions) {
 		row := strings.Split(instructions[index], " ")
-		if row[0][0] == '>' {
-			if stop == false {
-				stop = true
-			} else {
-				stop = false
-			}
-		}
-		if row[0][0] == ':' {
-			if len(row) == 2 {
-				loop = append(loop, row[0])
-				returnindex = append(returnindex, index)
-				cleaned := clean(row[1])
-				loopcount, err = strconv.Atoi(cleaned)
-				fmt.Printf("Start Loop: %s %d\n", row[0], loopcount)
-				log.Printf("Start Loop: %s %d\n", row[0], loopcount)
-				if err != nil {
-					fmt.Println(err.Error())
-					fmt.Printf("Loop index failure for: %s\n", row[0])
-					log.Printf("Loop index failure for: %s\n", row[0])
-				}
-				loopcount--
-			} else {
-				fmt.Printf("Loop index not present for: %s\n", row[0])
-				log.Printf("Loop index not present for: %s\n", row[0])
-			}
-		}
-		if row[0][0] != '>' && row[0][0] != ':' && row[0][0] != '#' && row[0] != "goto" {
-			if stop == false {
-				lex.Command(row, lout)
-			}
-		}
-		if row[0] == "goto" && loopcount > 0 {
-			index = findloopindex(clean(row[1]))
-			fmt.Printf("Goto %s %d\n", clean(row[1]), loopcount)
-			log.Printf("Goto %s %d\n", clean(row[1]), loopcount)
-			loopcount--
-		}
+		index = pre.Process(row, index, lout)
 		index++
 	}
 }
