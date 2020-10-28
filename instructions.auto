@@ -19,10 +19,3 @@ Every time you run this, a log will be generated in a folder 'autologs' where th
 >
 
 ####################################  Enter instructions below ###################################################
-
-:loop 2
-copyfile ./input/werwer.txt ./output/werwer.txt
-copyfolder ./input ./output
-run hello 1 2 3
-pause
-goto :loop
