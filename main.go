@@ -42,8 +42,8 @@ func importfile(lout *os.File) {
 		defer newfile.Close()
 		guide := `>
 'AUTO' INSTRUCTIONS
-You can place multi line comments in between '>' characters. 
-You can place a # to do single line comments.
+You can place comments in between '>' characters. 
+You can place a # for single line comments
 
 Here are the commands for this application:
 
@@ -51,17 +51,16 @@ pause - pauses the app asking for user input
 run filepath args - runs an application at a specific location i.e - "run C:\hello.exe argument1 argument2 argument3"
 deletefile filepath - deletes a file at a location i.e - "deletefile C:\hello.exe"
 copyfile sourcepath destinationpath - copies a file to a new location i.e - "copyfile C:\hello.exe C:\newhello.exe"
-clearfolder sourcepath - clears a folder of all files in it i.e - "clearfolder C:\folder"
-copyfolder sourcepath destinationpath - copies all files in a folder to new location i.e "copyfolder C:\folder C:\newfolder"
+clearfolder sourcepath - clears a folder of all files in it (excluding subfolders) i.e - "clearfolder C:\folder"
+copyfolder sourcepath destinationpath - copies all files in a folder to new location (excluding subfolders) i.e "copyfolder C:\folder C:\newfolder"
 
 You can start a loop for so many iterations with a colon i.e - ":loop 2" (loop twice)
 You can return to the loop with a goto i.e "goto :loop"
 
-Every time you run this, a log will be generated in a folder 'autologs' alongside where the application is saved.
+Every time you run this, a log will be generated in a folder 'autologs' where the application is saved.
 >
 
 ####################################  Enter instructions below ###################################################
-
 
 `
 		_, err := newfile.WriteString(guide)
