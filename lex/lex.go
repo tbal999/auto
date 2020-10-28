@@ -90,12 +90,13 @@ func Command(item []string, lout *os.File) {
 			if err != nil {
 				fmt.Println(err)
 				log.Println(err)
-			}
-			err = ioutil.WriteFile(to, input, 0644)
-			if err != nil {
-				fmt.Println("Error creating", to)
-				fmt.Println(err)
-				log.Println(err)
+			} else {
+				err = ioutil.WriteFile(to, input, 0644)
+				if err != nil {
+					fmt.Println("Error creating", to)
+					fmt.Println(err)
+					log.Println(err)
+				}
 			}
 		}
 	default:
