@@ -11,7 +11,7 @@ import (
 )
 
 func importfile(lout *os.File) {
-	filename := "instructions.txt"
+	filename := "instructions.auto"
 	content, err := ioutil.ReadFile(filename)
 	if err != nil {
 		fmt.Println(err.Error())
