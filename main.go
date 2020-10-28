@@ -50,4 +50,5 @@ func main() {
 	}
 	log.SetOutput(logf)
 	importfile(logf)
+	log.Println("Complete")
 }
