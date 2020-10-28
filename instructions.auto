@@ -1,7 +1,7 @@
 >
 'AUTO' INSTRUCTIONS
 You can place comments in between '>' characters. 
-You can place a # in front of a command to blank it out.
+You can place a # for single line comments
 
 Here are the commands for this application:
 
